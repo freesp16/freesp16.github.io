@@ -1,0 +1,155 @@
+---
+// The two downloads (hardware, Linux desktop) of the latest release; links go to the releases page until one exists.
+import { Icon } from '@astrojs/starlight/components';
+import { project, latestReleaseUrl, releasesUrl } from '../project';
+import { getLatest, findAsset, formatSize, formatDate } from '../lib/releases';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const latest = await getLatest();
+const hw = findAsset(latest, project.hardwareAsset);
+const linux = findAsset(latest, project.linuxAsset);
+const sums = findAsset(latest, project.checksumAsset);
+
+const items = [
+	{
+		icon: 'server',
+		title: 'Hardware',
+		file: hw?.name ?? 'autoexec.bin',
+		detail: 'Copy to the root of a FAT32 USB key.',
+		href: hw?.url ?? latestReleaseUrl,
+		size: hw ? formatSize(hw.size) : undefined,
+		guide: `${base}/install/hardware/`,
+	},
+	{
+		icon: 'linux',
+		title: 'Linux desktop',
+		file: linux?.name ?? 'Linux x86-64 build',
+		detail: 'Runs natively on 64-bit Linux, X11 or XWayland.',
+		href: linux?.url ?? latestReleaseUrl,
+		size: linux ? formatSize(linux.size) : undefined,
+		guide: `${base}/install/linux/`,
+	},
+] as const;
+---
+
+<div class="downloads not-content">
+	{
+		items.map((item) => (
+			<div class="download-card">
+				<div class="head">
+					<Icon name={item.icon} size="1.5rem" />
+					<span class="title">{item.title}</span>
+				</div>
+				<p class="file">
+					<code>{item.file}</code>
+					{item.size && <span class="size">{item.size}</span>}
+				</p>
+				<p class="detail">{item.detail}</p>
+				<div class="actions">
+					<a class="btn primary" href={item.href}>
+						<Icon name="download" size="1rem" />
+						Download
+					</a>
+					<a class="btn" href={item.guide}>Install guide</a>
+				</div>
+			</div>
+		))
+	}
+</div>
+<p class="release-meta">
+	{
+		latest ? (
+			<>
+				Latest release <a href={latest.url}>{latest.name}</a>, {formatDate(latest.date)}.
+				{sums && (
+					<>
+						{' '}
+						<a href={sums.url}>SHA-256 checksums</a>.
+					</>
+				)}{' '}
+				<a href={releasesUrl}>All releases</a>
+			</>
+		) : (
+			<>
+				Builds are published on the <a href={releasesUrl}>GitHub releases page</a>.
+			</>
+		)
+	}
+</p>
+
+<style>
+	.downloads {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+	.download-card {
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		background: var(--sl-color-bg-nav);
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.head {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		color: var(--sl-color-white);
+	}
+	.title {
+		font-size: var(--sl-text-xl);
+		font-weight: 600;
+	}
+	.file,
+	.detail {
+		margin: 0;
+		color: var(--sl-color-gray-2);
+	}
+	.file code {
+		font-size: var(--sl-text-sm);
+	}
+	.size {
+		margin-left: 0.5rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.actions {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-top: auto;
+		padding-top: 0.5rem;
+	}
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.45rem 1rem;
+		border-radius: 999px;
+		border: 1px solid var(--sl-color-gray-4);
+		color: var(--sl-color-white);
+		text-decoration: none;
+		font-weight: 600;
+		font-size: var(--sl-text-sm);
+	}
+	.btn:hover {
+		border-color: var(--sl-color-accent);
+	}
+	.btn.primary {
+		background: var(--sl-color-accent);
+		border-color: var(--sl-color-accent);
+		color: var(--sl-color-black);
+	}
+	.btn.primary:hover {
+		background: var(--sl-color-accent-high);
+		border-color: var(--sl-color-accent-high);
+	}
+	.release-meta {
+		margin-top: 0.75rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+</style>

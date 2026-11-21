@@ -1,0 +1,113 @@
+---
+title: Install on the Linux desktop
+description: Run freesp16 natively on 64-bit Linux with your keyboard, mouse and sound card.
+---
+
+import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+The Linux build is the same app as on the hardware, in an 800 × 480 window. It's handy for building kits and
+projects on your computer, for trying freesp16 before installing it on the instrument, and for development.
+
+## Requirements
+
+- 64-bit Linux (x86-64) with X11 or XWayland.
+- Sound through ALSA. PipeWire and PulseAudio work through their ALSA plugins (the `default` device).
+- For the optional GPU renderer: a working OpenGL ES 2 driver through EGL (Mesa or NVIDIA).
+
+## Install
+
+<Steps>
+
+1. **Install the system libraries.**
+
+    <Tabs syncKey="distro">
+    <TabItem label="Debian / Ubuntu">
+    ```sh
+    sudo apt install libasound2t64 libx11-6 libegl1 libgles2
+    ```
+    On Debian 12 / Ubuntu 22.04 and older, the first package is called `libasound2`.
+    </TabItem>
+    <TabItem label="Fedora">
+    ```sh
+    sudo dnf install alsa-lib libX11 libglvnd-egl libglvnd-gles
+    ```
+    </TabItem>
+    <TabItem label="Arch">
+    ```sh
+    sudo pacman -S alsa-lib libx11 libglvnd
+    ```
+    </TabItem>
+    </Tabs>
+
+2. **Download the Linux build** from the [download page](/download/) and unpack it:
+
+    ```sh
+    tar xf freesp16-*-linux-x86_64.tar.gz
+    cd freesp16-*-linux-x86_64
+    ```
+
+3. **Start it:**
+
+    ```sh
+    ./freesp16
+    ```
+
+</Steps>
+
+## Playing it with a computer keyboard
+
+The keyboard is laid out like the instrument's panel (US key positions):
+
+| Keys | Instrument control |
+| --- | --- |
+| <kbd>1</kbd>–<kbd>4</kbd>, <kbd>Q</kbd>–<kbd>R</kbd>, <kbd>A</kbd>–<kbd>F</kbd>, <kbd>Z</kbd>–<kbd>V</kbd> | The 16 pads (top row to bottom row) |
+| <kbd>5</kbd>–<kbd>=</kbd>, <kbd>T</kbd>–<kbd>]</kbd> | Step keys 1–16 |
+| <kbd>Space</kbd> / <kbd>B</kbd> / <kbd>G</kbd> | Play / Stop / Record |
+| <kbd>↑</kbd> <kbd>↓</kbd> | Turn the selected knob (hold <kbd>Alt</kbd> for fine steps) |
+| <kbd>←</kbd> <kbd>→</kbd> | Select the knob column |
+| Mouse wheel, <kbd>Enter</kbd> | Turn and push the selector |
+| <kbd>Esc</kbd> / <kbd>`</kbd> | Back / Home |
+| <kbd>F1</kbd>–<kbd>F4</kbd> | Bar 1–4 |
+| <kbd>F5</kbd>–<kbd>F8</kbd> | Pad mode: Track, Mute, Slice, Scale |
+| <kbd>F9</kbd> / <kbd>F10</kbd> | Scene / Pattern |
+| <kbd>F11</kbd> / <kbd>F12</kbd> | Touch strip mode / Hold |
+| <kbd>Ctrl</kbd> + mouse wheel | Play the touch strip; release <kbd>Ctrl</kbd> to lift your finger |
+| <kbd>K</kbd> (held) | Accent: pads play at full velocity |
+| <kbd>Ctrl</kbd>+<kbd>1</kbd>–<kbd>4</kbd> | Mixer, Browse, Utility, Project |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>V</kbd> / <kbd>Z</kbd> | Copy / Paste / Undo (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> redoes) |
+
+The mouse is the touch screen: click to tap, drag to move. A MIDI controller also works.
+
+## Settings
+
+Settings are `key=value` lines in `~/.config/freesp16/freesp16.conf`, or environment variables with the `FREESP16_`
+prefix (for example `FREESP16_SCALE=2`). The most useful ones:
+
+| Setting | Values | What it does |
+| --- | --- | --- |
+| `scale` | `1`…`4` | Window size: 1 = 800 × 480, 2 = 1600 × 960 |
+| `render` | `soft`, `gl-x11` | Software renderer (default, works everywhere) or the GPU renderer through EGL |
+| `audio_device` | an ALSA device, or `file:<path.wav>` | Where the audio goes; `file:` records the output to a WAV file in real time |
+
+Example `~/.config/freesp16/freesp16.conf`:
+
+```ini
+scale=2
+render=gl-x11
+audio_device=default
+```
+
+<Aside title="Where your files go">
+	Projects and samples are stored in freesp16's data folder under `~/.local/share/freesp16`. To use your samples, copy
+	them there or open the sample browser.
+</Aside>
+
+## Troubleshooting
+
+**No sound.** Check that another program can play through ALSA's `default` device (`aplay -L` lists the devices),
+then set `audio_device=` to the one you want.
+
+**The window is tiny.** Set `scale=2` (or 3 or 4) in the settings file.
+
+**The GPU renderer doesn't start.** The terminal output says why. Set `render=soft` to use the software renderer,
+which works on every machine.

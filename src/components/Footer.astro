@@ -1,0 +1,24 @@
+---
+// Starlight's footer plus the project's licence and trademark notice on every page.
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { project, repoUrl } from '../project';
+---
+
+<Default />
+<p class="legal">
+	{project.name} is free software: <a href={`${repoUrl}/blob/main/LICENSE`}>{project.license}</a>. It is an
+	independent project, not affiliated with, endorsed by or sponsored by Pioneer DJ or AlphaTheta. TORAIZ and SP-16 are
+	trademarks of their owners and are used here only to describe the hardware the software runs on.
+</p>
+
+<style>
+	.legal {
+		margin-top: 1.5rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+		line-height: 1.5;
+	}
+	.legal a {
+		color: inherit;
+	}
+</style>

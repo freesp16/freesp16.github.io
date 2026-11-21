@@ -1,0 +1,86 @@
+---
+title: Build and contribute
+description: Build freesp16 from source and contribute to the project.
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+freesp16 is written in C++20 with [JUCE](https://juce.com) and CMake. The same code builds for the hardware (ARM,
+cross-compiled in a Docker toolchain) and for the Linux desktop.
+
+## Requirements
+
+- CMake 3.25 or newer, Ninja, Python 3, a C++20 compiler (GCC or Clang)
+- Docker, for the hardware build
+- For the desktop build: `libasound2-dev libx11-dev libegl-dev libgles-dev` (and `xvfb` for the headless checks)
+
+## Build
+
+<Steps>
+
+1. **Get the source** with its JUCE submodule:
+
+    ```sh
+    git clone https://github.com/freesp16/freesp16.git
+    cd freesp16
+    git submodule update --init --depth 1
+    ```
+
+2. **Build and test the desktop app:**
+
+    ```sh
+    cmake --preset host-fast
+    cmake --build --preset host-fast -j8
+    ctest --preset host-fast -j8
+    ```
+
+    Then run `build/host-fast/bin/freesp16`.
+
+3. **Build the hardware binary** in the toolchain container:
+
+    ```sh
+    scripts/build-armel.sh
+    ```
+
+    The binary lands in `out/armel/`.
+
+4. **Run the end-to-end checks** headlessly (Xvfb, scripted input, audio rendered to a file):
+
+    ```sh
+    scripts/host-smoke.sh
+    ```
+
+</Steps>
+
+`ci/run-local.sh` runs the same stages as CI: lint, host build and tests, golden audio tests, the ARM build, the glibc
+compatibility check and packaging.
+
+## How the code is organised
+
+| Folder | What's in it |
+| --- | --- |
+| `src/core` | Data model, commands, undo |
+| `src/engine` | Real-time audio engine, voices, effects, sequencer |
+| `src/services` | Library, projects, rendering |
+| `src/io` | Controllers, MIDI, scripted input |
+| `src/ui` | Screens, widgets and the UI framework |
+| `src/platform` | Hardware-specific code: `imx6` (the instrument), `linux` (desktop), `host` (headless) |
+| `tests/` | Unit, golden and end-to-end tests |
+
+Modules register themselves, so new screens, effects and controllers don't require editing shared files. CI enforces
+the dependency rules between modules and the real-time rules of the audio thread.
+
+## Contributing
+
+- **Bugs and ideas:** [open an issue](https://github.com/freesp16/freesp16/issues/new). For bugs, include the
+  freesp16 version, hardware or Linux, and how to reproduce it.
+- **Pull requests:** small, focused changes with tests are easiest to review. Run `ci/run-local.sh lint host` before
+  you push.
+- **Performance matters:** the audio engine runs on a Cortex-A9. Keep allocation, locks and I/O out of the audio
+  thread; `tools/rt-lint.py` checks this.
+
+<Aside type="caution" title="No firmware in the repository">
+	Never commit firmware images, keys, update files or captures from the instrument. CI rejects them.
+</Aside>
+
+By contributing, you agree that your contribution is licensed under the project's licence, GPL-3.0-or-later.

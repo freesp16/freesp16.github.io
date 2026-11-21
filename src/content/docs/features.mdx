@@ -1,0 +1,124 @@
+---
+title: Features
+description: A tour of freesp16, screen by screen.
+---
+
+import Screen from '../../components/Screen.astro';
+import Gallery from '../../components/Gallery.astro';
+
+<p class="lead">
+	freesp16 is a complete sampler and groovebox: sixteen tracks, a step sequencer with parameter locks, scenes and
+	patterns, an arranger, effects, modulation and sampling. The screenshots on this page come straight from the app.
+</p>
+
+## Home: 16 pads at a glance
+
+The home screen shows all sixteen tracks as pads, each with its sample, track type and trigger mode. The pad you hit
+lights up, and the six knobs under the screen edit the selected track's volume, pan, pitch, time-stretch, loop and
+trigger mode. Tempo, quantize, scene, pattern and position are always visible at the top.
+
+<Screen name="home" alt="Home screen with 16 pads and the master meter" />
+
+- **Track types:** Sample, Thru (the audio input through the track's effects), MIDI and instrument.
+- **Trigger modes:** one-shot or gate (the sample plays only while you hold the pad), with choke groups.
+- **Pad modes:** TRACK, MUTE, SLICE (one slice per pad) and SCALE (play one sample chromatically or in a scale).
+
+## Track menu
+
+Each track is a chain of modules you can open with one touch: playback, amp envelope, two insert effects, mixer and
+LFO, plus its sequence.
+
+<Screen name="track-menu" alt="Track menu showing the module chain of a track" />
+
+## Playback and amp envelope
+
+Set the start, loop start and length on the waveform, reverse it, snap to a grid or slice it. The amp envelope shapes
+each hit with attack, hold and release, velocity sensitivity and tempo sync.
+
+<Gallery
+	items={[
+		{ name: 'playback', label: 'Playback' },
+		{ name: 'amp-envelope', label: 'Amp envelope' },
+	]}
+/>
+
+## Step sequencer
+
+Sixteen steps per bar and up to four bars per pattern. Every step can be a **full** trigger, a **half** trigger or a
+**parameter-only** step, and it can lock any of the track's parameters to its own value. Add retriggers (ratchets),
+micro-offsets, swing, step shift and transpose, or record in real time with quantize, pre-count and metronome.
+
+<Screen name="sequence" alt="Sequencer with active steps, the playhead and the trigger type selector" />
+
+## Scenes, patterns and the arranger
+
+A project holds 16 scenes of 16 patterns each. Switch patterns and scenes while playing; switches are queued to the
+end of the pass so you stay in time. Chain patterns, give each scene its own tempo, and copy, paste, swap or reset
+patterns and tracks. The arranger strings scenes into a song of up to 999 sections.
+
+<Screen name="scene-manager" alt="Scene manager with the scene and pattern grids" />
+
+## Mixer and routing
+
+A full mixer with volume, pan, send, mute and solo for every track, live meters, a send return and the master.
+Route tracks to separate outputs, set up the headphone cue, and insert the analog-filter slot (a digital filter model,
+or a loop through your own external filter).
+
+<Screen name="mixer" alt="Mixer with 16 channel strips and the master meter" />
+
+## Effects
+
+Two insert effects per track plus send and master effects:
+
+| Insert effects | Send effects |
+| --- | --- |
+| Chorus, flanger, phaser, 2-band EQ, multi-mode filter, delay, lo-fi, compressor, distortion, ducker | Delay, reverb, and the insert effects as sends |
+
+Every effect parameter can be locked per step and modulated by the LFO.
+
+<Gallery
+	items={[
+		{ name: 'fx-select', label: 'Choosing an effect' },
+		{ name: 'fx-delay', label: 'Delay' },
+	]}
+/>
+
+## LFO
+
+Each track has an LFO with seven shapes, free or tempo-synced, with depth and phase offset, routed to a track
+parameter or an effect parameter.
+
+<Screen name="lfo-pitch" alt="LFO screen modulating the pitch with a sine wave" />
+
+## Touch strip
+
+The touch strip has four modes: **PITCH** bends the selected track, **REPEAT** retriggers it at musical divisions, and
+**USER1** / **USER2** sweep up to eight parameters each, each with its own range. **HOLD** keeps the last position
+after you lift your finger.
+
+<Screen name="touch-strip" alt="Touch strip setting with the user-assignable parameters" />
+
+## Sampling
+
+Sample from the line or mic input with a threshold, then trim and edit on the waveform. **Live sampling** keeps a
+running buffer, so you can grab the last bars after the fact and loop them in time. You can also resample the
+instrument's own output, render patterns to audio and normalize.
+
+## Library and projects
+
+Browse samples by folder with preview, and load them onto tracks. Projects save atomically (a power cut never leaves a
+half-written project), autosave in the background and resume on start.
+
+<Screen name="browse" alt="Sample browser with folders and the preview function" />
+
+## MIDI and sync
+
+- MIDI tracks send notes, two CCs and program changes to external gear.
+- MIDI clock in and out, and Ableton Link to sync with other apps and devices.
+- Play pads and change parameters from a MIDI controller, with controller profiles and MIDI learn.
+
+## On the Linux desktop
+
+The same app runs natively on Linux in an 800 × 480 window, scalable up to 4×. Your computer keyboard plays the pads
+and the step keys, the mouse acts as the touch screen, and audio goes through ALSA, PipeWire or PulseAudio. See
+[Install on Linux](/install/linux/).

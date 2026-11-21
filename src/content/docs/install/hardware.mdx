@@ -1,0 +1,76 @@
+---
+title: Install on the TORAIZ SP-16
+description: Run freesp16 on your TORAIZ SP-16 from a FAT32 USB key, without flashing anything.
+---
+
+import { Aside, FileTree, Steps } from '@astrojs/starlight/components';
+
+freesp16 runs from a USB key. It never flashes or modifies the instrument's firmware: the stock firmware starts as
+usual, and freesp16 takes over when it finds the key.
+
+## What you need
+
+- The instrument, running its official firmware.
+- A USB key. Any size works; it is formatted as **FAT32**, so 32 GB or smaller is easiest.
+- `autoexec.bin` from the [download page](/download/).
+
+<Aside type="caution" title="Formatting erases the key">
+	Copy anything you want to keep off the USB key before you format it.
+</Aside>
+
+## Install
+
+<Steps>
+
+1. **Format the USB key as FAT32.**
+
+    - **Windows:** in File Explorer, right-click the key → *Format…* → File system **FAT32** → *Start*. For keys
+      larger than 32 GB, Windows doesn't offer FAT32; use a tool such as Rufus or format it on Linux or macOS.
+    - **macOS:** open *Disk Utility*, select the key, click *Erase*, choose **MS-DOS (FAT)** and scheme
+      **Master Boot Record**.
+    - **Linux:** with the key's device in place of `/dev/sdX` (check it with `lsblk`; the wrong device loses
+      data):
+
+      ```sh
+      sudo mkfs.vfat -F 32 -n FREESP16 /dev/sdX1
+      ```
+
+2. **Copy `autoexec.bin` to the root of the key**, not into a folder. Keep the file name exactly `autoexec.bin`.
+
+    <FileTree>
+    - USB key (FAT32)
+      - autoexec.bin
+    </FileTree>
+
+3. **Eject the key safely** from your computer (Eject on macOS, *Safely Remove* on Windows, `udisksctl unmount` or
+   your file manager on Linux).
+
+4. **Power on the instrument without the key** and wait until the stock firmware has fully loaded and shows its home
+   screen.
+
+5. **Plug the USB key into the instrument.** freesp16 loads from the key and starts on its home screen.
+
+</Steps>
+
+## Going back to the stock firmware
+
+Switch the instrument off, remove the USB key and switch it on again. freesp16 does not change the firmware, so the
+instrument starts exactly as before.
+
+## Updating freesp16
+
+Download the new `autoexec.bin` and copy it over the old one on the key. Your projects and samples stay where they are.
+
+## Troubleshooting
+
+**Nothing happens when I plug in the key**
+- Check that the key is FAT32 (not exFAT or NTFS) and that `autoexec.bin` is at the root of the key.
+- Wait until the stock firmware has fully loaded before you plug in the key.
+- Try another USB key; some keys are slow to mount.
+- Check the file against the [SHA-256 checksum](/download/#check-your-download) of the release.
+
+**It started once but not again**
+- Switch the instrument off and on with the key removed, wait for the stock firmware, then plug the key in again.
+
+Still stuck? [Open an issue](https://github.com/freesp16/freesp16/issues/new) with the instrument's firmware version,
+the freesp16 version and what you see on the screen.

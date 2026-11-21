@@ -1,0 +1,39 @@
+---
+title: Download
+description: Download freesp16 for the hardware or the Linux desktop.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Downloads from '../../components/Downloads.astro';
+
+Every release has two builds: one for the hardware and one for the Linux desktop. They come from the same source code
+and are built automatically by the project's CI.
+
+<Downloads />
+
+## Check your download
+
+Each release lists the SHA-256 checksum of every file. To check a download on Linux or macOS:
+
+```sh
+sha256sum autoexec.bin
+```
+
+On Windows (PowerShell):
+
+```powershell
+Get-FileHash autoexec.bin -Algorithm SHA256
+```
+
+The printed value must match the one on the release page.
+
+<Aside type="caution" title="Only download from this site or GitHub">
+	Official builds are published only on the [GitHub releases
+	page](https://github.com/freesp16/freesp16/releases). Don't run an `autoexec.bin` from anywhere else on your
+	instrument.
+</Aside>
+
+## Older versions and source code
+
+All previous releases, their notes and the source code archive of each version are on the
+[releases page](https://github.com/freesp16/freesp16/releases). See the [changelog](/changelog/) for what changed.

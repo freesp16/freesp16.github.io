@@ -1,0 +1,49 @@
+---
+// A grid of screenshots; each opens full size.
+import { Image } from 'astro:assets';
+
+interface Props {
+	items: { name: string; label: string }[];
+}
+const { items } = Astro.props;
+const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/screens/*.png', { eager: true });
+---
+
+<div class="gallery not-content">
+	{
+		items.map(({ name, label }) => {
+			const shot = shots[`../assets/screens/${name}.png`];
+			if (!shot) throw new Error(`no screenshot src/assets/screens/${name}.png`);
+			return (
+				<a href={shot.default.src} class="item">
+					<Image src={shot.default} alt={`${label} screen`} widths={[400, 800]} sizes="(min-width: 50rem) 24rem, 100vw" class="screen" />
+					<span>{label}</span>
+				</a>
+			);
+		})
+	}
+</div>
+
+<style>
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+		gap: 1.25rem;
+		margin-block: 1.5rem;
+	}
+	.item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		text-decoration: none;
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+	}
+	.item:hover {
+		color: var(--sl-color-accent);
+	}
+	.item:hover :global(.screen) {
+		border-color: var(--sl-color-accent);
+	}
+</style>

@@ -1,0 +1,56 @@
+---
+title: FAQ
+description: Common questions about freesp16.
+---
+
+## What is freesp16?
+
+A free, open-source sampler and groovebox app for the 16-pad sampler hardware built around an i.MX6 processor and an
+800 × 480 touch screen, best known as the Pioneer DJ TORAIZ SP-16. It is a new app written from scratch, not a
+modified copy of the stock firmware. It also runs on the Linux desktop.
+
+## Is it official?
+
+No. freesp16 is an independent community project. It is not affiliated with, endorsed by or supported by Pioneer DJ or
+AlphaTheta. Please don't contact them about freesp16; use the project's [issue tracker](/support/) instead.
+
+## Can it damage my instrument?
+
+freesp16 never flashes or rewrites the instrument's firmware. It runs from the USB key after the stock firmware has
+started, and removing the key and restarting gives you the stock firmware back. As with any software, use it at your
+own risk: the GPL licence comes without a warranty.
+
+## Does it touch my existing projects and samples?
+
+freesp16 keeps its own projects, but it can read your samples, and every save is atomic, so a power cut never leaves a
+half-written project. Back up the instrument's storage before trying any new software, just in case.
+
+## Can I open the projects I made with the stock firmware?
+
+Yes: freesp16 imports projects made with the stock firmware, so you can keep playing your existing work.
+
+## How do I go back to the stock firmware?
+
+Switch the instrument off, remove the USB key, and switch it on again.
+
+## Does the hardware build need an internet connection or an account?
+
+No. Nothing to register, nothing sent anywhere.
+
+## Why does the Linux build exist?
+
+It's the same app, so you can try it, prepare projects on your computer, or develop and test without the instrument.
+
+## Which firmware files do I need?
+
+None. freesp16 doesn't include or need any part of the stock firmware, and the project never distributes it.
+
+## Is it really free?
+
+Yes, free as in freedom and free of charge. The source code is under the GPL-3.0-or-later; the JUCE framework it is
+built with is under the AGPLv3. You can study, change and share it under those licences.
+
+## How can I help?
+
+Report bugs, suggest features, test releases on your instrument, or contribute code: see
+[Build and contribute](/contribute/).

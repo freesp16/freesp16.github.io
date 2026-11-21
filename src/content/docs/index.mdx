@@ -1,0 +1,122 @@
+---
+title: freesp16
+description: A free, open-source sampler and groovebox app for the Pioneer DJ TORAIZ SP-16, with a smooth 60 fps screen, and for the Linux desktop.
+template: splash
+head:
+  - tag: title
+    content: freesp16 · a free sampler and groovebox app
+hero:
+  title: A new life for your TORAIZ SP-16
+  tagline: freesp16 is a free, open-source sampler and groovebox app for the Pioneer DJ TORAIZ SP-16. It starts from a USB key without flashing anything, keeps the screen smooth at 60 fps, and also runs on the Linux desktop.
+  image:
+    html: '<img src="/hero.webp" width="1600" height="960" alt="The freesp16 home screen with 16 pads, transport and master meter" class="hero-shot" fetchpriority="high">'
+  actions:
+    - text: Download
+      link: /download/
+      icon: download
+    - text: Install guide
+      link: /install/hardware/
+      icon: right-arrow
+      variant: secondary
+    - text: Source code
+      link: https://github.com/freesp16/freesp16
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Downloads from '../../components/Downloads.astro';
+import Gallery from '../../components/Gallery.astro';
+import { Image } from 'astro:assets';
+import hardware from '../../assets/hardware.png';
+
+## Made for the TORAIZ SP-16
+
+freesp16 runs on the **Pioneer DJ TORAIZ SP-16**. It is written from scratch for this instrument: its quad-core ARM
+Cortex-A9 processor, its GPU, its 800 × 480 touch screen and every control on its panel. The 16 velocity-sensitive pads,
+the six knobs, the selector, the 16 step keys, the touch strip and all the lamps work as you expect.
+
+<figure class="not-content hardware">
+	<Image src={hardware} alt="Illustration of the TORAIZ SP-16 panel running freesp16 on its screen" widths={[800, 1400, 2000]} sizes="(min-width: 72rem) 68rem, 100vw" />
+	<figcaption>freesp16 on the TORAIZ SP-16 (illustration).</figcaption>
+</figure>
+
+You don't flash anything to install it: copy one file to a USB key, plug it into your SP-16, and freesp16 starts.
+Power-cycle without the key and your SP-16 starts its stock firmware as usual.
+
+<CardGrid>
+	<LinkCard title="Install on the TORAIZ SP-16" description="One file on a FAT32 USB key. No flashing." href="/install/hardware/" />
+	<LinkCard title="Run it on Linux" description="The same app in a desktop window, with keyboard, mouse and real audio." href="/install/linux/" />
+</CardGrid>
+
+## Fast and smooth
+
+freesp16 is tuned to get the most out of your SP-16, so the screen feels fluid and the sound never suffers.
+
+<CardGrid>
+	<Card title="A smooth 60 fps screen" icon="rocket">
+		The screen is drawn by the SP-16's graphics chip, so menus, meters and waveforms move smoothly at 60 frames per
+		second.
+	</Card>
+	<Card title="More power for your sound" icon="analytics">
+		Because graphics are handled separately, the processor stays free for audio: more voices and more effects at the
+		same time.
+	</Card>
+	<Card title="Instant response" icon="approve-check-circle">
+		Hit a pad and you hear it right away. freesp16 is built for low latency, so playing feels tight.
+	</Card>
+</CardGrid>
+
+## Everything a groovebox needs
+
+<CardGrid stagger>
+	<Card title="16 pads, 16 tracks" icon="puzzle">
+		Sample, Thru, MIDI and instrument tracks with region, loop, reverse, pitch, time-stretch, choke groups and
+		velocity-sensitive pads. Play them as tracks, mutes, slices or in a musical scale.
+	</Card>
+	<Card title="Step sequencer" icon="list-format">
+		Full, half and parameter-only triggers, per-step parameter locks, retrigger, offset, swing, real-time recording
+		with quantize and pre-count.
+	</Card>
+	<Card title="Scenes, patterns and songs" icon="random">
+		16 scenes × 16 patterns, queued switching and chaining while playing, per-scene tempo, and an arranger for
+		songs of up to 999 sections.
+	</Card>
+	<Card title="Effects" icon="star">
+		Two insert slots per track, send and master effects: chorus, flanger, phaser, EQ, multi-mode filter, delay,
+		reverb, lo-fi, distortion, compressor and ducker, all lockable per step.
+	</Card>
+	<Card title="Modulation and performance" icon="analytics">
+		A per-track LFO with seven shapes, amp envelopes, and a touch strip with pitch, repeat and two user-assignable
+		modes with HOLD.
+	</Card>
+	<Card title="Sampling and sync" icon="setting">
+		Sample from the inputs, live-sample from a ring buffer, resample and render. MIDI tracks, MIDI clock in and out,
+		and Ableton Link.
+	</Card>
+</CardGrid>
+
+## A look inside
+
+<Gallery
+	items={[
+		{ name: 'sequence', label: 'Sequencer' },
+		{ name: 'mixer', label: 'Mixer' },
+		{ name: 'fx-select', label: 'Effects' },
+		{ name: 'lfo-pitch', label: 'LFO' },
+		{ name: 'scene-manager', label: 'Scene manager' },
+		{ name: 'browse', label: 'Sample browser' },
+	]}
+/>
+
+[See the full feature tour →](/features/)
+
+## Download
+
+<Downloads />
+
+## Free and open
+
+freesp16 is free software under the GPL. The full source code, issue tracker and release builds are on
+[GitHub](https://github.com/freesp16/freesp16). Bug reports, ideas and pull requests are welcome; see
+[Build and contribute](/contribute/).

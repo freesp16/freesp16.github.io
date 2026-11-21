@@ -1,0 +1,45 @@
+---
+// Release notes, read from GitHub releases at build time (Markdown bodies rendered with marked; the bodies are our own).
+import { marked } from 'marked';
+import { Badge } from '@astrojs/starlight/components';
+import { releasesUrl } from '../project';
+import { getReleases, formatDate } from '../lib/releases';
+
+const releases = await getReleases();
+const rendered = await Promise.all(
+	releases.map(async (r) => ({ ...r, html: r.body.trim() ? await marked.parse(r.body) : '' })),
+);
+---
+
+{
+	rendered.length === 0 ? (
+		<p>
+			No release has been published yet. Follow the <a href={releasesUrl}>releases page</a> (Watch → Custom →
+			Releases on GitHub) to be notified of the first one.
+		</p>
+	) : (
+		rendered.map((r) => (
+			<section class="release">
+				<h2 id={r.tag}>
+					<a href={r.url}>{r.name}</a>
+					{r.prerelease && <Badge text="Pre-release" variant="caution" />}
+				</h2>
+				<p class="date">{formatDate(r.date)}</p>
+				{r.html ? <Fragment set:html={r.html} /> : <p>See the release page for details.</p>}
+			</section>
+		))
+	)
+}
+
+<style>
+	.release + .release {
+		margin-top: 2.5rem;
+		padding-top: 2rem;
+		border-top: 1px solid var(--sl-color-gray-5);
+	}
+	.date {
+		margin-top: 0.25rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+</style>
