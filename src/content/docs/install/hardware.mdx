@@ -1,18 +1,28 @@
 ---
 title: Install on the TORAIZ SP-16
-description: Run freesp16 on your TORAIZ SP-16 from a FAT32 USB key, without flashing anything.
+description: Run freesp16 on your TORAIZ SP-16 from a FAT32 USB key with the community boot menu, without flashing anything.
 ---
 
 import { Aside, FileTree, Steps } from '@astrojs/starlight/components';
 
 freesp16 runs from a USB key. It never flashes or modifies the instrument's firmware: the stock firmware starts as
-usual, and freesp16 takes over when it finds the key.
+usual, and the key takes over when you plug it in.
+
+The key holds two files:
+
+- **`autoexec.bin`**: the [boot menu](https://github.com/freesp16/bootmenu), a small community launcher. The
+  instrument starts it from the key, and it lets you choose between freesp16, other community software on the key and
+  the official software.
+- **`freesp16`**: the app itself. The boot menu finds it next to `autoexec.bin` and lists it with its name, version
+  and icon.
+
+You install the boot menu once. Updating freesp16 means copying a new `freesp16` file.
 
 ## What you need
 
 - The instrument, running its official firmware.
 - A USB key. Any size works; it is formatted as **FAT32**, so 32 GB or smaller is easiest.
-- `autoexec.bin` from the [download page](/download/).
+- `autoexec.bin` (boot menu) and `freesp16` (hardware build), both from the [download page](/download/).
 
 <Aside type="caution" title="Formatting erases the key">
 	Copy anything you want to keep off the USB key before you format it.
@@ -35,11 +45,13 @@ usual, and freesp16 takes over when it finds the key.
       sudo mkfs.vfat -F 32 -n FREESP16 /dev/sdX1
       ```
 
-2. **Copy `autoexec.bin` to the root of the key**, not into a folder. Keep the file name exactly `autoexec.bin`.
+2. **Copy both files to the root of the key**, not into a folder. Keep the names exactly `autoexec.bin` and
+   `freesp16` (no extension; if your browser added one, remove it).
 
     <FileTree>
     - USB key (FAT32)
-      - autoexec.bin
+      - autoexec.bin the boot menu
+      - freesp16 the app
     </FileTree>
 
 3. **Eject the key safely** from your computer (Eject on macOS, *Safely Remove* on Windows, `udisksctl unmount` or
@@ -48,18 +60,57 @@ usual, and freesp16 takes over when it finds the key.
 4. **Power on the instrument without the key** and wait until the stock firmware has fully loaded and shows its home
    screen.
 
-5. **Plug the USB key into the instrument.** freesp16 loads from the key and starts on its home screen.
+5. **Plug the USB key into the instrument.** The boot menu appears after a few seconds.
+
+6. **Choose freesp16** with the SELECT encoder and push it to start. The boot menu remembers your choice: next time
+   it starts freesp16 on its own after a short countdown.
 
 </Steps>
 
+## The boot menu
+
+The first row is always the official software, with the installed firmware version. Below it are the apps found on
+the key, marked **LIVE USB**; the one you started last is marked **LAST** and starts after the countdown.
+
+| Control | Action |
+| --- | --- |
+| Turn **SELECT** | choose |
+| Push **SELECT** or **PLAY** | start |
+| **BACK** | go to the official software (twice: start it) |
+| **HOME** | look for apps on the key again |
+| Touch a row | start it |
+
+When you quit freesp16, the boot menu comes back. Its settings (the default app, the countdown) go in an optional
+`bootmenu.conf` file on the key; see the boot menu's
+[usage guide](https://github.com/freesp16/bootmenu/blob/main/docs/usage.md).
+
+## Where freesp16 keeps its files
+
+Everything freesp16 writes stays on the key, in a `freesp16-data` folder next to the app. Nothing is written to the
+instrument's internal memory. freesp16 still reads the projects and samples you made with the stock firmware, on the
+instrument and in a `PIONEER DJ SAMPLER` folder on any key.
+
+<FileTree>
+- USB key (FAT32)
+  - autoexec.bin
+  - freesp16
+  - freesp16-data/ freesp16's projects and settings, created on first start
+  - bootmenu.conf optional
+  - bootmenu.log written by the boot menu
+</FileTree>
+
+Back up the `freesp16-data` folder from time to time, and keep it when you reformat the key.
+
 ## Going back to the stock firmware
 
-Switch the instrument off, remove the USB key and switch it on again. freesp16 does not change the firmware, so the
-instrument starts exactly as before.
+Choose the official software in the boot menu, or switch the instrument off, remove the USB key and switch it on
+again. Neither the boot menu nor freesp16 changes the firmware, so the instrument starts exactly as before.
 
 ## Updating freesp16
 
-Download the new `autoexec.bin` and copy it over the old one on the key. Your projects and samples stay where they are.
+Download the new `freesp16` and copy it over the old one on the key. Your projects and samples stay where they are.
+Update the boot menu the same way, by replacing `autoexec.bin` with the one from its
+[latest release](https://github.com/freesp16/bootmenu/releases/latest).
 
 ## Troubleshooting
 
@@ -67,10 +118,20 @@ Download the new `autoexec.bin` and copy it over the old one on the key. Your pr
 - Check that the key is FAT32 (not exFAT or NTFS) and that `autoexec.bin` is at the root of the key.
 - Wait until the stock firmware has fully loaded before you plug in the key.
 - Try another USB key; some keys are slow to mount.
-- Check the file against the [SHA-256 checksum](/download/#check-your-download) of the release.
+- Check the files against the [SHA-256 checksums](/download/#check-your-download) of their releases.
+
+**The boot menu appears but freesp16 isn't listed**
+- Check that the file is at the root of the key (or in an `apps` folder) and is named exactly `freesp16`.
+- Push **HOME** in the boot menu to look for apps again.
+- Open `bootmenu.log` on the key on your computer: it lists every file the menu found and why it skipped one.
+
+**freesp16 starts and the boot menu comes back at once**
+- The boot menu shows a message, and `bootmenu.log` on the key has the details. Download `freesp16` again in case the
+  copy is damaged.
 
 **It started once but not again**
 - Switch the instrument off and on with the key removed, wait for the stock firmware, then plug the key in again.
 
-Still stuck? [Open an issue](https://github.com/freesp16/freesp16/issues/new) with the instrument's firmware version,
-the freesp16 version and what you see on the screen.
+Still stuck? Ask on the [Discord server](https://discord.gg/DedpwtE6EK) or
+[open an issue](https://github.com/freesp16/freesp16/issues/new) with the instrument's firmware version, the freesp16
+and boot menu versions, what you see on the screen and the `bootmenu.log` file from the key.

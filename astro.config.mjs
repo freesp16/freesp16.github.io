@@ -14,7 +14,10 @@ export default defineConfig({
 				dark: './src/assets/logo-dark.svg',
 			},
 			favicon: '/favicon.svg',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/freesp16/freesp16' }],
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/freesp16/freesp16' },
+				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/DedpwtE6EK' },
+			],
 			editLink: { baseUrl: 'https://github.com/freesp16/freesp16.github.io/edit/main/' },
 			customCss: ['./src/styles/theme.css'],
 			components: { Footer: './src/components/Footer.astro' },

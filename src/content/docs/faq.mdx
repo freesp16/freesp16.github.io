@@ -16,8 +16,9 @@ AlphaTheta. Please don't contact them about freesp16; use the project's [issue t
 
 ## Can it damage my instrument?
 
-freesp16 never flashes or rewrites the instrument's firmware. It runs from the USB key after the stock firmware has
-started, and removing the key and restarting gives you the stock firmware back. As with any software, use it at your
+freesp16 never flashes or rewrites the instrument's firmware. It runs from the USB key, started by the community
+boot menu after the stock firmware has started, and writes its files only to the key. Removing the key and restarting
+gives you the stock firmware back. As with any software, use it at your
 own risk: the GPL licence comes without a warranty.
 
 ## Does it touch my existing projects and samples?
@@ -31,7 +32,8 @@ Yes: freesp16 imports projects made with the stock firmware, so you can keep pla
 
 ## How do I go back to the stock firmware?
 
-Switch the instrument off, remove the USB key, and switch it on again.
+Choose the official software in the boot menu, or switch the instrument off, remove the USB key, and switch it on
+again.
 
 ## Does the hardware build need an internet connection or an account?
 
@@ -49,6 +51,16 @@ None. freesp16 doesn't include or need any part of the stock firmware, and the p
 
 Yes, free as in freedom and free of charge. The source code is under the GPL-3.0-or-later; the JUCE framework it is
 built with is under the AGPLv3. You can study, change and share it under those licences.
+
+## What is the boot menu?
+
+The [boot menu](https://github.com/freesp16/bootmenu) is the `autoexec.bin` on the USB key: a small community
+launcher that lists freesp16, other community software on the key and the official software, and starts the one you
+choose. It remembers your choice, so after the first time freesp16 starts on its own.
+
+## Where can I talk with other users?
+
+On the [freesp16 Discord server](https://discord.gg/DedpwtE6EK).
 
 ## How can I help?
 

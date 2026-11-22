@@ -7,7 +7,9 @@ import { Aside } from '@astrojs/starlight/components';
 import Downloads from '../../components/Downloads.astro';
 
 Every release has two builds: one for the hardware and one for the Linux desktop. They come from the same source code
-and are built automatically by the project's CI.
+and are built automatically by the project's CI. On the hardware, freesp16 is started by the community
+[boot menu](https://github.com/freesp16/bootmenu), which you download once; see the
+[install guide](/install/hardware/).
 
 <Downloads />
 
@@ -16,21 +18,22 @@ and are built automatically by the project's CI.
 Each release lists the SHA-256 checksum of every file. To check a download on Linux or macOS:
 
 ```sh
-sha256sum autoexec.bin
+sha256sum autoexec.bin freesp16
 ```
 
 On Windows (PowerShell):
 
 ```powershell
-Get-FileHash autoexec.bin -Algorithm SHA256
+Get-FileHash autoexec.bin, freesp16 -Algorithm SHA256
 ```
 
-The printed value must match the one on the release page.
+Each printed value must match the one on its release page (freesp16's or the boot menu's).
 
 <Aside type="caution" title="Only download from this site or GitHub">
-	Official builds are published only on the [GitHub releases
-	page](https://github.com/freesp16/freesp16/releases). Don't run an `autoexec.bin` from anywhere else on your
-	instrument.
+	Official builds are published only on the GitHub releases pages of
+	[freesp16](https://github.com/freesp16/freesp16/releases) and of the
+	[boot menu](https://github.com/freesp16/bootmenu/releases). Don't run an `autoexec.bin` or a `freesp16` from
+	anywhere else on your instrument.
 </Aside>
 
 ## Older versions and source code

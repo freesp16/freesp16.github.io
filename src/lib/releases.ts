@@ -1,4 +1,4 @@
-// GitHub releases of the app, read once per build. Without network, without releases or when the API refuses, the
+// GitHub releases of the app (and of the boot menu), read once per build and repository. Without network, without releases or when the API refuses, the
 // site still builds: every download link then falls back to the releases page.
 import { project } from '../project';
 
@@ -18,20 +18,20 @@ export interface Release {
 	assets: Asset[];
 }
 
-let cached: Promise<Release[]> | undefined;
+const cached = new Map<string, Promise<Release[]>>();
 
-export function getReleases(): Promise<Release[]> {
-	cached ??= load();
-	return cached;
+export function getReleases(repo: string = project.appRepo): Promise<Release[]> {
+	if (!cached.has(repo)) cached.set(repo, load(repo));
+	return cached.get(repo)!;
 }
 
-async function load(): Promise<Release[]> {
+async function load(repo: string): Promise<Release[]> {
 	const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
 	if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 	try {
-		const res = await fetch(`https://api.github.com/repos/${project.appRepo}/releases?per_page=30`, { headers });
+		const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=30`, { headers });
 		if (!res.ok) {
-			console.warn(`[releases] GitHub API answered ${res.status}; download links fall back to the releases page`);
+			console.warn(`[releases] ${repo}: GitHub API answered ${res.status}; download links fall back to the releases page`);
 			return [];
 		}
 		const list = (await res.json()) as any[];
@@ -47,14 +47,14 @@ async function load(): Promise<Release[]> {
 				assets: (r.assets ?? []).map((a: any) => ({ name: a.name, url: a.browser_download_url, size: a.size })),
 			}));
 	} catch (e) {
-		console.warn(`[releases] could not reach GitHub (${(e as Error).message}); download links fall back to the releases page`);
+		console.warn(`[releases] ${repo}: could not reach GitHub (${(e as Error).message}); download links fall back to the releases page`);
 		return [];
 	}
 }
 
 /** The newest stable release, or the newest pre-release when there is no stable one yet. */
-export async function getLatest(): Promise<Release | undefined> {
-	const all = await getReleases();
+export async function getLatest(repo: string = project.appRepo): Promise<Release | undefined> {
+	const all = await getReleases(repo);
 	return all.find((r) => !r.prerelease) ?? all[0];
 }
 

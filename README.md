@@ -24,8 +24,9 @@ Without network or without a published release the site still builds; download b
 
 ## Releases
 
-The download buttons pick from the latest release: `autoexec.bin` for the hardware, and the asset whose name matches
-`linux…x86_64` / `amd64` (or an `.AppImage`) for the Linux desktop. The site rebuilds on every push, once a day, and
+The download buttons pick from the latest release: `freesp16` (the armel executable) for the hardware, and the asset
+whose name matches `linux…x86_64` / `amd64` (or an `.AppImage`) for the Linux desktop. The boot menu's `autoexec.bin`
+comes from the latest release of [freesp16/bootmenu](https://github.com/freesp16/bootmenu). The site rebuilds on every push, once a day, and
 when the app's release workflow sends a `release-published` event:
 
 ```sh

@@ -5,9 +5,10 @@ description: Get help with freesp16 and report bugs.
 
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-freesp16 is supported by its community on GitHub.
+freesp16 is supported by its community, on Discord and on GitHub.
 
 <CardGrid>
+	<LinkCard title="Join the Discord" description="Ask questions, share what you made, and talk with other users and the developers." href="https://discord.gg/DedpwtE6EK" />
 	<LinkCard title="Report a bug" description="Something doesn't work as expected." href="https://github.com/freesp16/freesp16/issues/new" />
 	<LinkCard title="Browse issues" description="See if your question or bug is already known." href="https://github.com/freesp16/freesp16/issues" />
 </CardGrid>
@@ -23,7 +24,8 @@ freesp16 is supported by its community on GitHub.
 ## A good bug report includes
 
 - The freesp16 version, and whether it runs on the hardware or on Linux (with your distribution).
-- On the hardware: the instrument's firmware version.
+- On the hardware: the instrument's firmware version, the boot menu version and the `bootmenu.log` file from the
+  USB key.
 - What you did, what you expected, and what happened instead. Exact steps help most.
 - A photo or screenshot of the screen if something looks wrong.
 - On Linux: the terminal output.

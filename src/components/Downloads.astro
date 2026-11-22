@@ -1,21 +1,33 @@
 ---
-// The two downloads (hardware, Linux desktop) of the latest release; links go to the releases page until one exists.
+// The downloads of the latest releases: the boot menu (autoexec.bin, its own project) and freesp16 for the hardware,
+// then the Linux desktop build. Links go to the releases page until a release exists.
 import { Icon } from '@astrojs/starlight/components';
-import { project, latestReleaseUrl, releasesUrl } from '../project';
+import { project, latestReleaseUrl, releasesUrl, bootmenuLatestUrl } from '../project';
 import { getLatest, findAsset, formatSize, formatDate } from '../lib/releases';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const latest = await getLatest();
+const bootmenu = await getLatest(project.bootmenuRepo);
+const menu = findAsset(bootmenu, project.bootmenuAsset);
 const hw = findAsset(latest, project.hardwareAsset);
 const linux = findAsset(latest, project.linuxAsset);
 const sums = findAsset(latest, project.checksumAsset);
 
 const items = [
 	{
+		icon: 'list-format',
+		title: 'Boot menu',
+		file: menu?.name ?? 'autoexec.bin',
+		detail: `Needed once on the USB key: it starts freesp16 or the official software.${bootmenu ? ` Version ${bootmenu.tag.replace(/^v/, '')}.` : ''}`,
+		href: menu?.url ?? bootmenuLatestUrl,
+		size: menu ? formatSize(menu.size) : undefined,
+		guide: `${base}/install/hardware/`,
+	},
+	{
 		icon: 'server',
 		title: 'Hardware',
-		file: hw?.name ?? 'autoexec.bin',
-		detail: 'Copy to the root of a FAT32 USB key.',
+		file: hw?.name ?? 'freesp16',
+		detail: 'Copy to the root of the USB key, next to autoexec.bin.',
 		href: hw?.url ?? latestReleaseUrl,
 		size: hw ? formatSize(hw.size) : undefined,
 		guide: `${base}/install/hardware/`,
