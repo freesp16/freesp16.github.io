@@ -11,6 +11,25 @@ import Gallery from '../../components/Gallery.astro';
 	patterns, an arranger, effects, modulation and sampling. The screenshots on this page come straight from the app.
 </p>
 
+## New compared to the stock software
+
+freesp16 keeps the SP-16's workflow and opens its projects, and adds:
+
+- **A modern interface at 60 fps:** a redesigned screen drawn by the SP-16's graphics chip, with smooth meters and
+  playheads. The pads light up with every hit, the sequencer's included.
+- **[Advanced motion control](#motion):** record knob and touch strip moves into the pattern, then view, zoom and
+  redraw them per step.
+- **[Advanced bypass](#track-menu-and-bypass):** switch playback, the amp envelope or an effect off and on with one
+  tap, to compare.
+- **[A better mixer](#mixer-and-routing):** wider strips with live meters under the faders and a compact send /
+  master pair.
+- **[Solo and smarter mutes](#mute-and-solo):** solo from the pads, a mute mode per track (stop the sound or the
+  steps), mutes saved per pattern, and a status badge.
+- **[Plug-in instruments (coming soon)](#plug-in-instruments-coming-soon):** a CLAP plug-in host for software
+  instruments and effects.
+- **Small things that add up:** touch strip REPEAT hits recorded onto the steps, an optional CPU meter, and the POWER
+  button saves your work, unsaved changes included, and reopens it at the next start.
+
 ## Home: 16 pads at a glance
 
 The home screen shows all sixteen tracks as pads, each with its sample, track type and trigger mode. The pad you hit
@@ -23,12 +42,18 @@ trigger mode. Tempo, quantize, scene, pattern and position are always visible at
 - **Trigger modes:** one-shot or gate (the sample plays only while you hold the pad), with choke groups.
 - **Pad modes:** TRACK, MUTE, SLICE (one slice per pad) and SCALE (play one sample chromatically or in a scale).
 
-## Track menu
+## Track menu and bypass
 
 Each track is a chain of modules you can open with one touch: playback, amp envelope, two insert effects, mixer and
-LFO, plus its sequence.
+LFO, plus its sequence and its recorded motion.
 
 <Screen name="track-menu" alt="Track menu showing the module chain of a track" />
+
+Press **BYPASS** in the header and the modules you can bypass get a dashed outline: a tap on playback, the amp
+envelope or an effect now switches it off or back on instead of opening it. Bypassed modules keep their BYPASS mark
+after you leave, so you always see what is switched off.
+
+<Screen name="bypass" alt="Track menu in BYPASS mode with the delay effect bypassed" />
 
 ## Playback and amp envelope
 
@@ -50,6 +75,21 @@ micro-offsets, swing, step shift and transpose, or record in real time with quan
 
 <Screen name="sequence" alt="Sequencer with active steps, the playhead and the trigger type selector" />
 
+## Motion
+
+Turn on **MOTION RECORD** for a track, arm REC and play: every knob you turn, and every touch strip move, is written
+into the pattern step by step. Touch strip REPEAT hits are recorded as notes too. The MOTION page shows one lane per
+parameter; push the selector on a lane to zoom it to the full screen with its value scale, then draw new values with
+your finger or edit a step with the selector. ADD PARAMETER lets you draw motion for a parameter you never touched,
+and every edit can be undone.
+
+<Gallery
+	items={[
+		{ name: 'motion', label: 'Motion lanes' },
+		{ name: 'motion-zoom', label: 'A lane zoomed' },
+	]}
+/>
+
 ## Scenes, patterns and the arranger
 
 A project holds 16 scenes of 16 patterns each. Switch patterns and scenes while playing; switches are queued to the
@@ -60,11 +100,22 @@ patterns and tracks. The arranger strings scenes into a song of up to 999 sectio
 
 ## Mixer and routing
 
-A full mixer with volume, pan, send, mute and solo for every track, live meters, a send return and the master.
-Route tracks to separate outputs, set up the headphone cue, and insert the analog-filter slot (a digital filter model,
-or a loop through your own external filter).
+A full mixer with volume, pan, send, mute and solo for every track, a send return and the master. The strips are wide,
+each fader sits on its own live meter, and the send / master pair stays compact so the tracks get the room. Route
+tracks to separate outputs, set up the headphone cue, and insert the analog-filter slot (a digital filter model, or a
+loop through your own external filter).
 
-<Screen name="mixer" alt="Mixer with 16 channel strips and the master meter" />
+<Screen name="mixer" alt="Mixer with 16 channel strips, two muted tracks and live meters" />
+
+## Mute and solo
+
+- **Solo from the pads:** hold MUTE and hit a pad to solo that track; a soloed pad breathes, and silent tracks dim.
+- **MUTE MODE per track:** a mute either stops the track's sound or stops its steps, chosen in the track menu.
+- **Mutes per pattern:** every pattern remembers its own mutes, so switching pattern brings back its mute set.
+- **Always visible:** while the pads are in MUTE mode, a badge in the status row shows the mute mode; while MUTE is
+  held, a SOLO badge.
+
+<Screen name="home-mute" alt="Home screen in MUTE mode with the MUTE badge in the status row" />
 
 ## Effects
 
@@ -83,6 +134,11 @@ Every effect parameter can be locked per step and modulated by the LFO.
 	]}
 />
 
+## Plug-in instruments (coming soon)
+
+freesp16 is getting a **CLAP** plug-in host: load software instruments and effects onto a track and play them from
+the pads and the sequencer, much like VST instruments in a computer studio. CLAP is an open plug-in standard.
+
 ## LFO
 
 Each track has an LFO with seven shapes, free or tempo-synced, with depth and phase offset, routed to a track
@@ -94,7 +150,8 @@ parameter or an effect parameter.
 
 The touch strip has four modes: **PITCH** bends the selected track, **REPEAT** retriggers it at musical divisions, and
 **USER1** / **USER2** sweep up to eight parameters each, each with its own range. **HOLD** keeps the last position
-after you lift your finger.
+after you lift your finger. With REC armed, REPEAT hits are recorded onto the steps, and on tracks with MOTION RECORD
+on, strip moves are recorded as [motion](#motion).
 
 <Screen name="touch-strip" alt="Touch strip setting with the user-assignable parameters" />
 
