@@ -1,6 +1,7 @@
 ---
 // The downloads of the latest releases: the boot menu (autoexec.bin, its own project) and freesp16 for the hardware,
-// then the Linux desktop build. Links go to the releases page until a release exists.
+// then the Linux desktop build. Links go to the releases page until a release exists; a release without a Linux build
+// sends the Linux card to the build-from-source steps instead.
 import { Icon } from '@astrojs/starlight/components';
 import { project, latestReleaseUrl, releasesUrl, bootmenuLatestUrl } from '../project';
 import { getLatest, findAsset, formatSize, formatDate } from '../lib/releases';
@@ -12,14 +13,17 @@ const menu = findAsset(bootmenu, project.bootmenuAsset);
 const hw = findAsset(latest, project.hardwareAsset);
 const linux = findAsset(latest, project.linuxAsset);
 const sums = findAsset(latest, project.checksumAsset);
+const version = (r: typeof latest) => (r ? ` Version ${r.tag.replace(/^v/, '')}.` : '');
+const linuxFromSource = latest !== undefined && linux === undefined;
 
 const items = [
 	{
 		icon: 'list-format',
 		title: 'Boot menu',
 		file: menu?.name ?? 'autoexec.bin',
-		detail: `Needed once on the USB key: it starts freesp16 or the official software.${bootmenu ? ` Version ${bootmenu.tag.replace(/^v/, '')}.` : ''}`,
+		detail: `Needed once on the USB key: it starts freesp16 or the official software.${version(bootmenu)}`,
 		href: menu?.url ?? bootmenuLatestUrl,
+		label: 'Download',
 		size: menu ? formatSize(menu.size) : undefined,
 		guide: `${base}/install/hardware/`,
 	},
@@ -27,17 +31,21 @@ const items = [
 		icon: 'server',
 		title: 'Hardware',
 		file: hw?.name ?? 'freesp16',
-		detail: 'Copy to the root of the USB key, next to autoexec.bin.',
+		detail: `Copy to the root of the USB key, next to autoexec.bin.${version(latest)}`,
 		href: hw?.url ?? latestReleaseUrl,
+		label: 'Download',
 		size: hw ? formatSize(hw.size) : undefined,
 		guide: `${base}/install/hardware/`,
 	},
 	{
 		icon: 'linux',
 		title: 'Linux desktop',
-		file: linux?.name ?? 'Linux x86-64 build',
-		detail: 'Runs natively on 64-bit Linux, X11 or XWayland.',
-		href: linux?.url ?? latestReleaseUrl,
+		file: linux?.name ?? (linuxFromSource ? 'Build from source' : 'Linux x86-64 build'),
+		detail: linuxFromSource
+			? 'No ready-made Linux build in this release yet: build it from the source code in a few commands.'
+			: 'Runs natively on 64-bit Linux, X11 or XWayland.',
+		href: linux?.url ?? (linuxFromSource ? `${base}/contribute/#build` : latestReleaseUrl),
+		label: linuxFromSource ? 'Build steps' : 'Download',
 		size: linux ? formatSize(linux.size) : undefined,
 		guide: `${base}/install/linux/`,
 	},
@@ -59,8 +67,8 @@ const items = [
 				<p class="detail">{item.detail}</p>
 				<div class="actions">
 					<a class="btn primary" href={item.href}>
-						<Icon name="download" size="1rem" />
-						Download
+						<Icon name={item.label === 'Download' ? 'download' : 'setting'} size="1rem" />
+						{item.label}
 					</a>
 					<a class="btn" href={item.guide}>Install guide</a>
 				</div>
